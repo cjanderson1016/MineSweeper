@@ -46,8 +46,7 @@ class GameLogic:
 
         self.victory = False # Sets the victory state
 
-
-
+        self.first_click = True # Flag to indicate it is the first click
 
     def start_game(self, mine_count, safe_cell=None):
         """
@@ -65,8 +64,7 @@ class GameLogic:
         # Variables to keep track of game state
         self.game_over = False
         self.victory = False
-
-        self.board.initialize_board(mine_count, safe_cell) #Create Minesweeper board with the given amount of mines
+        self.first_click = True # ensure that first_click is set to True for resets
 
     def toggle_flag(self, row, col):
         """
@@ -107,6 +105,11 @@ class GameLogic:
         if self.game_over:
             return
         
+        # If it is the first click, initialize the board and set first_click to False
+        if self.first_click:
+            self.board.initialize_board(self.total_mines, safe_cell=(row, col))
+            self.first_click = False
+
         cell = self.board.get_cell(row, col) # The cell that the player clicked on
 
         # A cell may not be revealed if: It has a flag on it, or if it has already been revealed.
