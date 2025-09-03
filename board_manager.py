@@ -33,6 +33,7 @@ class BoardManager:
                 )
 
     def get_cell(self, row, col):
+        # Return the cell dictionary at the specified position
         return self.board[row][col]
 
     def reset_board(self):
