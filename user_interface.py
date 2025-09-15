@@ -14,6 +14,7 @@ class UserInterface:
         self.mine_label = tk.Label(self.header_frame, text="Enter number of mines (10-20):")
         self.mine_entry = tk.Entry(self.header_frame, width=5)
         self.mine_entry.insert(0, "10")
+        self.mine_entry.bind("<Return>", lambda event: self.start_game())  # Bind Enter key to start game
         self.start_button = tk.Button(self.header_frame, text="Start Game", command=self.start_game)
         self.header_frame.pack(pady=5)
         self.mine_label.pack(side=tk.LEFT)
