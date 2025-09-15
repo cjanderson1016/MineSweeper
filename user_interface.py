@@ -20,6 +20,13 @@ class UserInterface:
         self.mine_entry.pack(side=tk.LEFT)
         self.start_button.pack(side=tk.LEFT, padx=5)
         
+        # Bind F11 to toggle fullscreen and Escape to exit fullscreen
+        self.root.bind("<F11>", self.toggle_fullscreen)
+        self.root.bind("<Escape>", self.exit_fullscreen)
+        self.root.bind("<Configure>", self.update_size)  # Adjust button sizes on window resize
+        self.fullscreen_label = tk.Label(self.root, text="(F11: Fullscreen, Esc: Exit Fullscreen)", font=("Arial", 8))
+        self.fullscreen_label.pack(side=tk.BOTTOM, padx=10)
+
         # Status text
         self.status_label = tk.Label(self.root, text="Set mines and click Start Game", font=("Arial", 12))
         self.status_label.pack(pady=5)
@@ -85,6 +92,17 @@ class UserInterface:
                 row_buttons.append(btn)
             self.buttons.append(row_buttons)
 
+    def update_size(self, event=None):
+        # Adjust button sizes based on window size
+        print("Window resized")
+        btn_width = 9 if self.root.attributes('-fullscreen') or self.root.wm_state() == "zoomed" else 3
+        btn_height = 3 if self.root.attributes('-fullscreen') or self.root.wm_state() == "zoomed" else 1
+
+        for r in range(self.game.board.size):
+            for c in range(self.game.board.size):
+                btn = self.buttons[r][c]
+                btn.config(width=btn_width, height=btn_height)
+
     def update_board(self):
         # Refresh grid based on the state of the game
         for r in range(self.game.board.size):
@@ -138,3 +156,14 @@ class UserInterface:
         for w in self.grid_frame.winfo_children():
             w.destroy()
         self.buttons = []
+
+    def toggle_fullscreen(self,event=None):
+        # Toggle the full-screen mode of the window
+        if self.root.attributes('-fullscreen'):
+            self.root.attributes('-fullscreen', False)
+        else:
+            self.root.attributes('-fullscreen', True)
+
+    def exit_fullscreen(self,event=None):
+        # Exit full-screen mode and close the window on Escape key press
+        self.root.attributes('-fullscreen', False)
