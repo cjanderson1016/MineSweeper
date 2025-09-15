@@ -2,6 +2,18 @@
 import tkinter as tk
 from tkinter import messagebox
 
+# Number colors
+NUMBER_COLORS = {
+    1: 'blue',
+    2: 'green',
+    3: 'red',
+    4: 'navy',
+    5: 'maroon',
+    6: 'teal',
+    7: 'purple',
+    8: 'darkorange'
+}
+
 class UserInterface:
     def __init__(self, root, game_logic, input_handler):
         self.root = root  # Window
@@ -99,6 +111,10 @@ class UserInterface:
         btn_width = 9 if self.root.attributes('-fullscreen') or self.root.wm_state() == "zoomed" else 3
         btn_height = 3 if self.root.attributes('-fullscreen') or self.root.wm_state() == "zoomed" else 1
 
+        # Guard: if buttons not yet built, skip
+        if not self.buttons or len(self.buttons) != self.game.board.size or any(len(row) != self.game.board.size for row in self.buttons):
+            return
+
         for r in range(self.game.board.size):
             for c in range(self.game.board.size):
                 btn = self.buttons[r][c]
@@ -116,7 +132,7 @@ class UserInterface:
                     if cell['is_mine']:
                         btn.config(text="💣", disabledforeground="red")
                     elif cell['adjacent'] > 0:
-                        btn.config(text=str(cell['adjacent']), disabledforeground="black")
+                        btn.config(text=str(cell['adjacent']), disabledforeground=NUMBER_COLORS[cell['adjacent']])
                     else:
                         btn.config(text="")
                 else:
