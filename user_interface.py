@@ -13,6 +13,7 @@ class UserInterface:
         self.header_frame = tk.Frame(self.root)
         self.mine_label = tk.Label(self.header_frame, text="Enter number of mines (10-20):")
         self.mine_entry = tk.Entry(self.header_frame, width=5)
+        self.mine_entry.insert(0, "10")
         self.start_button = tk.Button(self.header_frame, text="Start Game", command=self.start_game)
         self.header_frame.pack(pady=5)
         self.mine_label.pack(side=tk.LEFT)
@@ -63,10 +64,8 @@ class UserInterface:
         self.status_label.config(text="Choose mines and press Start Game")
 
     def build_board(self):
-        # Create grid with labels and buttons
-        for w in self.grid_frame.winfo_children():
-            w.destroy()
-        self.buttons = []
+        # Remove any old widgets
+        self.clear_board_widgets()
 
         # Coloum header from A-J
         tk.Label(self.grid_frame, text="").grid(row=0, column=0)
@@ -92,11 +91,8 @@ class UserInterface:
             for c in range(self.game.board.size):
                 cell = self.game.board.get_cell(r, c)
                 btn = self.buttons[r][c]
-                if cell['is_flagged']:
-                    btn.config(text="🚩", relief=tk.RAISED, bg="SystemButtonFace")
-                elif cell['is_covered']:
-                    btn.config(text="", relief=tk.RAISED, bg="SystemButtonFace")
-                else:
+                if not cell['is_covered']:
+                    # revealed tile: visually disabled/sunken
                     btn.config(state="disabled", relief=tk.SUNKEN, bg="lightgrey")
                     if cell['is_mine']:
                         btn.config(text="💣", disabledforeground="red")
@@ -104,11 +100,21 @@ class UserInterface:
                         btn.config(text=str(cell['adjacent']), disabledforeground="black")
                     else:
                         btn.config(text="")
+                else:
+                    # covered tile
+                    btn.config(state="normal", relief=tk.RAISED, bg="SystemButtonFace")
+                    if cell['is_flagged']:
+                        btn.config(text="🚩")
+                    else:
+                        btn.config(text="")
         
         # Update remaining flags in header
         flags_remaining = self.game.total_mines - self.game.flags
-        self.status_label.config(text=f"Game in progress — Mines: {self.game.total_mines} | Flags remaining: {flags_remaining}")
-
+        if not self.game.game_over:
+            self.status_label.config(text=f"Game in progress — Mines: {self.game.total_mines} | Flags remaining: {flags_remaining}")
+        else:
+            # If game_over, leave the status_label to show the result message elsewhere
+            pass
 
 
     def show_game_over(self, victory):

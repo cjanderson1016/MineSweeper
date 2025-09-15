@@ -19,7 +19,15 @@ class InputHandler:
             self.ui.show_game_over(self.game.victory)
 
     def handle_right_click(self, row, col):
-        # Tell the game logic to toggle the flag state on the clicked cell
-        self.game.toggle_flag(row, col)
-        # Update board display to show the new flag state
-        self.ui.update_board()
+        # Don't try to flag an uncovered cell or if the game is over
+        if self.game.game_over:
+            return
+        cell = self.game.board.get_cell(row, col) # get the cell that was clicked
+        # Ignore attempts to flag uncovered cells
+        if not cell['is_covered']:
+            return
+
+        changed = self.game.toggle_flag(row, col) # toggle the flag and store if it was toggled
+        # if the flag was toggled, update the board
+        if changed:
+            self.ui.update_board()

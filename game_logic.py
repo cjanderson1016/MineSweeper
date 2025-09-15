@@ -69,6 +69,8 @@ class GameLogic:
     def toggle_flag(self, row, col):
         """
         Function called whenever the player places down a flag (right click)
+        Toggles a flag at (row, col).
+        Returns True if the flag state changed, False otherwise.
 
         Input: The x/y coordinates of the cell that the player clicks on 
 
@@ -76,19 +78,28 @@ class GameLogic:
         
         """
 
+        if self.game_over:
+            return False
 
         cell = self.board.get_cell(row, col) # The cell that the player clicked on
+        
+        # Only allow flagging if the cell is still covered
+        if not cell['is_covered']:
+            return False
 
         # Check if the cell already has a flag on it. If it does, remove the flag.
         if cell['is_flagged']:
             cell['is_flagged'] = False
             self.flags -= 1 # Remove flag
+            return True
         
         # If there is no flag on the cell, then check if the player has placed all of their flags. If not, place a flag.
         else:
             if self.flags < self.total_mines:
                 cell['is_flagged'] = True
                 self.flags += 1 # Add flag
+                return True
+            return False
 
 
     def reveal_cell(self, row, col):
