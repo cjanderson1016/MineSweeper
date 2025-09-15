@@ -1,6 +1,25 @@
 # ----- input_handler.py -----
+"""
+File Name: input_handler.py
+
+Description: Handles user input events for the Minesweeper game. 
+    Includes --> 1) Processing left clicks (reveal cells), 2) Processing right clicks (toggle flags), and 3) Coordinating between game logic and UI updates
+
+All Collaborators: Group 4, ChatGPT
+
+Other sources for code: ChatGPT
+
+Date Created: 8/29/2025
+
+Last Updated: 9/9/2025
+"""
 
 class InputHandler:
+    """
+    Class that handles user input events for the Minesweeper game. 
+    Includes --> 1) Processing left clicks (reveal cells), 2) Processing right clicks (toggle flags), and 3) Coordinating between game logic and UI updates
+    """
+
     def __init__(self, game_logic, ui):
         # Store reference to the game logic instance for making game state changes
         self.game = game_logic
