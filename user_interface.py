@@ -155,6 +155,29 @@ class UserInterface:
 
     def show_game_over(self, victory):
         # Display win or lose and pop up to replay
+        if not victory:
+            # Trigger screen shake first, then show dialog after shake completes
+            self.boom_feedback_with_dialog()
+            return
+        
+        # For victory, show dialog immediately (no shake needed)
+        self._show_game_over_dialog(victory)
+
+    def boom_feedback_with_dialog(self):
+        """
+        Trigger boom feedback, then show dialog after shake completes.
+        """
+        self.flash_grid()
+        self.shake_window()
+        
+        # Calculate shake duration: cycles * 4 steps * interval_ms
+        shake_duration = 12 * 4 * 16  # ~768ms
+        self.root.after(shake_duration + 100, lambda: self._show_game_over_dialog(False))
+
+    def _show_game_over_dialog(self, victory):
+        """
+        Show the actual game over dialog.
+        """
         result = "You Win! 🎉" if victory else "Game Over 💥"
         choice = messagebox.askyesnocancel(result, "Play Again?\nYes = Same Mines\nNo = Choose New Mines\nCancel = Quit")
 
@@ -185,3 +208,79 @@ class UserInterface:
     def exit_fullscreen(self,event=None):
         # Exit full-screen mode and close the window on Escape key press
         self.root.attributes('-fullscreen', False)
+
+    def shake_window(self, cycles=12, amplitude=14, decay=0.85, interval_ms=16):
+        """
+        Non-blocking window shake. 
+        - cycles: how many direction steps (4 steps ≈ 1 full wobble)
+        - amplitude: starting pixel offset
+        - decay: multiply amplitude each step
+        - interval_ms: time between steps (16 ≈ 60fps)
+        """
+        # If fullscreen, fall back to a flash since geometry wiggle won't show
+        try:
+            if self.root.attributes('-fullscreen'):
+                self.flash_grid()
+                return
+        except Exception:
+            pass
+
+        # Prevent overlapping shakes
+        if getattr(self, "_is_shaking", False):
+            return
+        self._is_shaking = True
+
+        # Snapshot original position and build a small offset pattern
+        try:
+            orig_x = self.root.winfo_x()
+            orig_y = self.root.winfo_y()
+        except Exception:
+            # If not yet mapped, just skip
+            self._is_shaking = False
+            return
+
+        # Sequence: right, left, down, up (repeats), with decaying amplitude
+        offsets = []
+        a = float(amplitude)
+        for i in range(cycles):
+            offsets.append((+a, 0))
+            offsets.append((-a, 0))
+            offsets.append((0, +a))
+            offsets.append((0, -a))
+            a *= decay
+
+        # Apply offsets using .after so we don't block the UI
+        def _step(i=0):
+            if i >= len(offsets):
+                # Restore original position at the very end
+                self.root.geometry(f"+{int(orig_x)}+{int(orig_y)}")
+                self._is_shaking = False
+                return
+            dx, dy = offsets[i]
+            self.root.geometry(f"+{int(orig_x + dx)}+{int(orig_y + dy)}")
+            self.root.after(interval_ms, _step, i + 1)
+
+        _step()
+
+    def flash_grid(self, flash_ms=140):
+        """
+        Quick red border flash on the grid card—nice for 'boom' and also works in fullscreen.
+        """
+        if not hasattr(self, "_grid_border_orig"):
+            # Store original border color once
+            self._grid_border_orig = self.grid_frame.cget("highlightbackground")
+
+        # Flash red
+        self.grid_frame.configure(highlightbackground="red", highlightcolor="red")
+
+        def _restore():
+            self.grid_frame.configure(highlightbackground=self._grid_border_orig, highlightcolor=self._grid_border_orig)
+
+        self.root.after(flash_ms, _restore)
+
+    def boom_feedback(self):
+        """
+        Convenience: flash + shake together.
+        """
+        self.flash_grid()
+        self.shake_window()
