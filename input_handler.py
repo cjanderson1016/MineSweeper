@@ -11,7 +11,7 @@ Other sources for code: ChatGPT
 
 Date Created: 8/29/2025
 
-Last Updated: 9/9/2025
+Last Updated: 9/16/2025
 """
 
 class InputHandler:
@@ -43,7 +43,7 @@ class InputHandler:
             return
         cell = self.game.board.get_cell(row, col) # get the cell that was clicked
         # Ignore attempts to flag uncovered cells
-        if not cell['is_covered']:
+        if not cell.is_covered:
             return
 
         changed = self.game.toggle_flag(row, col) # toggle the flag and store if it was toggled
