@@ -127,19 +127,19 @@ class UserInterface:
             for c in range(self.game.board.size):
                 cell = self.game.board.get_cell(r, c)
                 btn = self.buttons[r][c]
-                if not cell['is_covered']:
+                if not cell.is_covered:
                     # revealed tile: visually disabled/sunken
                     btn.config(state="disabled", relief=tk.SUNKEN, bg="lightgrey")
-                    if cell['is_mine']:
+                    if cell.is_mine:
                         btn.config(text="💣", disabledforeground="red")
-                    elif cell['adjacent'] > 0:
-                        btn.config(text=str(cell['adjacent']), disabledforeground=NUMBER_COLORS[cell['adjacent']])
+                    elif cell.adjacent > 0:
+                        btn.config(text=str(cell.adjacent), disabledforeground=NUMBER_COLORS[cell.adjacent])
                     else:
                         btn.config(text="")
                 else:
                     # covered tile
                     btn.config(state="normal", relief=tk.RAISED, bg="SystemButtonFace")
-                    if cell['is_flagged']:
+                    if cell.is_flagged:
                         btn.config(text="🚩")
                     else:
                         btn.config(text="")
