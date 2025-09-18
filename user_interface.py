@@ -1,3 +1,22 @@
+"""
+File Name: user_interface.py
+
+Description: Builds and manages the Minesweeper game's graphical user interface (GUI) using Tkinter. 
+    Includes --> 1) Prompting for number of mines and starting a game, 
+                 2) Building the board grid with buttons, 
+                 3) Handling button visuals for revealed/flagged/mine cells, 
+                 4) Displaying victory or game-over messages, 
+                 5) Providing options to replay with same or new mine count.
+
+All Collaborators: Group 4, ChatGPT
+
+Other sources for code: ChatGPT, Tkinter documentation
+
+Date Created: 8/29/2025
+
+Last Updated: 9/17/2025
+"""
+
 # ----- user_interface.py -----
 import tkinter as tk
 from tkinter import messagebox
