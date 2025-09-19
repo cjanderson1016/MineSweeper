@@ -19,6 +19,7 @@ from game_logic import GameLogic
 from input_handler import InputHandler
 from user_interface import UserInterface
 
+# Source: ChatGPT
 def main():
     # declare the root for the GUI
     root = tk.Tk()

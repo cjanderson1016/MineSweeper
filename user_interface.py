@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
+# Source: Original work
 # Number colors
 NUMBER_COLORS = {
     1: 'blue',
@@ -15,6 +16,7 @@ NUMBER_COLORS = {
 }
 
 class UserInterface:
+    # Source: Original work combined with ChatGPT
     def __init__(self, root, game_logic, input_handler):
         self.root = root  # Window
         self.game = game_logic  # Game logic
@@ -48,6 +50,7 @@ class UserInterface:
         self.grid_frame = tk.Frame(self.root)
         self.grid_frame.pack(padx=10, pady=10)
 
+    # Source: ChatGPT
     def start_game(self):
         # Start game after validating mine input
         try:
@@ -63,6 +66,7 @@ class UserInterface:
         self.build_board()
         self.status_label.config(text=f"Game in progress — Mines: {mines} | Flags remaining: {mines}")
 
+    # Source: ChatGPT
     def hide_mine_prompt(self):
         # Remove mine entry widgets
         self.start_button.pack_forget()
@@ -70,6 +74,7 @@ class UserInterface:
         self.mine_label.pack_forget()
         self.header_frame.pack_forget()
 
+    # Source: ChatGPT
     def show_mine_prompt(self, default_same=None):
         # Show mine entry again for replay
         self.clear_board_widgets()
@@ -83,6 +88,7 @@ class UserInterface:
             self.start_button.pack(side=tk.LEFT, padx=5)
         self.status_label.config(text="Choose mines and press Start Game")
 
+    # Source: Original work combined with ChatGPT
     def build_board(self):
         # Remove any old widgets
         self.clear_board_widgets()
@@ -105,6 +111,7 @@ class UserInterface:
                 row_buttons.append(btn)
             self.buttons.append(row_buttons)
 
+    # Source: Original work
     def update_size(self, event=None):
         # Adjust button sizes based on window size
         print("Window resized")
@@ -121,6 +128,7 @@ class UserInterface:
                 btn = self.buttons[r][c]
                 btn.config(width=btn_width, height=btn_height, font=("Segoe UI", font_size, "bold"))
 
+    # Source: Original work combined with ChatGPT
     def update_board(self):
         # Refresh grid based on the state of the game
         for r in range(self.game.board.size):
@@ -152,7 +160,7 @@ class UserInterface:
             # If game_over, leave the status_label to show the result message elsewhere
             pass
 
-
+    # Source: ChatGPT
     def show_game_over(self, victory):
         # Display win or lose and pop up to replay
         result = "You Win! 🎉" if victory else "Game Over 💥"
@@ -169,12 +177,14 @@ class UserInterface:
         else:
             self.root.destroy()
 
+    # Source: ChatGPT
     def clear_board_widgets(self):
         # Clear the whole grid
         for w in self.grid_frame.winfo_children():
             w.destroy()
         self.buttons = []
 
+    # Source: Original work
     def toggle_fullscreen(self,event=None):
         # Toggle the full-screen mode of the window
         if self.root.attributes('-fullscreen'):
@@ -182,6 +192,7 @@ class UserInterface:
         else:
             self.root.attributes('-fullscreen', True)
 
+    # Source: Original work
     def exit_fullscreen(self,event=None):
         # Exit full-screen mode and close the window on Escape key press
         self.root.attributes('-fullscreen', False)

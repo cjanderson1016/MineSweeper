@@ -20,12 +20,14 @@ class InputHandler:
     Includes --> 1) Processing left clicks (reveal cells), 2) Processing right clicks (toggle flags), and 3) Coordinating between game logic and UI updates
     """
 
+    # Source: ChatGPT
     def __init__(self, game_logic, ui):
         # Store reference to the game logic instance for making game state changes
         self.game = game_logic
         # Store reference to the user interface instance for updating the display
         self.ui = ui
 
+    # Source: ChatGPT
     def handle_left_click(self, row, col):
         # Tell the game logic to reveal the clicked cell
         self.game.reveal_cell(row, col)
@@ -37,6 +39,7 @@ class InputHandler:
             # Pass victory status (true/false)
             self.ui.show_game_over(self.game.victory)
 
+    # Source: Original work combined with ChatGPT
     def handle_right_click(self, row, col):
         # Don't try to flag an uncovered cell or if the game is over
         if self.game.game_over:

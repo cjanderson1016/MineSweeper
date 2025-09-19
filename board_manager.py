@@ -2,6 +2,7 @@
 import random
 
 # Class representing an individual cell. The minesweeper board is a 10x10 grid of these cells.
+# Source: Original work
 class Cell:
     def __init__(self, is_mine = False, is_covered = True, is_flagged = False, adjacent = 0):
         self.is_mine = is_mine
@@ -10,12 +11,14 @@ class Cell:
         self.adjacent = adjacent
 
 class BoardManager:
+    # Source: ChatGPT
     def __init__(self, size=10):
         #Intialize the board variables and size
         self.size = size
         self.board = []
         self.mines = set()
 
+    # Source: Original work combined with ChatGPT
     def initialize_board(self, mine_count, safe_cell=None):
         # Populate the board with cells and place mines
         self.board = [[Cell()
@@ -23,6 +26,7 @@ class BoardManager:
         self.place_mines(mine_count, safe_cell) #Place mines on the board
         self.calculate_adjacent_counts() #Calculate adjacent mine counts for each cell
 
+    # Source: ChatGPT
     def place_mines(self, mine_count, safe_cell=None):
         # Randomly place mines on the board, avoiding the safe_cell if provided
         positions = [(r, c) for r in range(self.size) for c in range(self.size)] #List of all possible positions
@@ -32,6 +36,7 @@ class BoardManager:
         for r, c in self.mines: #For each randomly selected position
             self.board[r][c].is_mine = True #Mark the cell as a mine
 
+    # Source: ChatGPT
     def calculate_adjacent_counts(self):
         # Calculate the number of adjacent mines for each cell
         # Iterate through each cell in the board
@@ -45,10 +50,12 @@ class BoardManager:
                     if 0 <= nr < self.size and 0 <= nc < self.size and self.board[nr][nc].is_mine #Count adjacent mines
                 )
 
+    # Source: ChatGPT
     def get_cell(self, row, col):
         # Return the cell dictionary at the specified position
         return self.board[row][col]
 
+    # Source: ChatGPT
     def reset_board(self):
         # Reset the board to an empty state
         self.board = []

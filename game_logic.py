@@ -26,6 +26,7 @@ class GameLogic:
     cells not containing mines are revealed.
     """
 
+    # Source: Original work combined with ChatGPT
     def __init__(self, board_manager: BoardManager):
         """
         Initializes game logic for the board the player will interact with
@@ -48,6 +49,7 @@ class GameLogic:
 
         self.first_click = True # Flag to indicate it is the first click
 
+    # Source: Original work combined with ChatGPT
     def start_game(self, mine_count, safe_cell=None):
         """
         Function that begins the game
@@ -66,6 +68,7 @@ class GameLogic:
         self.victory = False
         self.first_click = True # ensure that first_click is set to True for resets
 
+    # Source: Original work combined with ChatGPT
     def toggle_flag(self, row, col):
         """
         Function called whenever the player places down a flag (right click)
@@ -101,7 +104,7 @@ class GameLogic:
                 return True
             return False
 
-
+    # Source: Original work combined with ChatGPT
     def reveal_cell(self, row, col):
         """
         Function called whenever the player reveals a cell (left click). Checks if the cell can be revealed, triggers game-over if the player uncovers a mine.
@@ -148,8 +151,7 @@ class GameLogic:
 
         self.check_victory() # Check for a victory state after every time a cell is revealed
 
-
-
+    # Source: ChatGPT
     def check_victory(self):
         """
         Helper function that checks for victory state.
