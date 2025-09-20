@@ -30,7 +30,7 @@ def main():
     board = BoardManager()
 
     # initialize the game logic with the game board
-    game = GameLogic(board)
+    game = GameLogic(board) 
 
     # initialize the UI with the GUI root and game logic
     # None for input handler because it hasn't been created yet and the handler needs the ui to be initialized

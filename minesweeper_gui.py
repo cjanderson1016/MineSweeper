@@ -1,3 +1,18 @@
+"""
+File Name: minesweeper_gui.py
+
+Description: This file initializes the GUI using Tkinter, prompts the player to choose the number of mines, and launches the game. 
+The GUI also manages building the board, input handling (left click to uncover a cell right click to place a flag), 
+cell revealing logic with recusrive uncovering, win/loss detection, and restart options.
+
+All Collaborators: Group 4, ChatGPT
+
+Other sources for code: ChatGPT
+
+Date Created: 8/29/2025
+
+Last Updated: 9/14/2025
+"""
 import tkinter as tk
 from tkinter import messagebox
 import random

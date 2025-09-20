@@ -1,3 +1,18 @@
+"""
+File Name: board_manager.py
+
+Description: File that defines the Cell class, which represents individual cells on the board, and the BoardManager class.
+BoardManager handles board initialization, random mine placement, adjacent mine calculations, cell access, and board resets. 
+
+
+All Collaborators: Group 4, ChatGPT
+
+Other sources for code: ChatGPT
+
+Date Created: 8/29/2025
+
+Last Updated: 9/16/2025
+"""
 # ----- board_manager.py -----
 import random
 

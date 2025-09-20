@@ -1,3 +1,18 @@
+"""
+File Name: input_handler.py
+
+Description:  File handles user interactions with the game board, mine count input, game status updates, fullscreen controls, and 
+dynamic resizing of the grid. Shows the state of cells based on gameplay (such as number color). Works with minesweeper_gui.py to
+display the full interactabble GUI.
+
+All Collaborators: Group 4, ChatGPT
+
+Other sources for code: ChatGPT
+
+Date Created: 8/29/2025
+
+Last Updated: 9/18/2025
+"""
 # ----- user_interface.py -----
 import tkinter as tk
 from tkinter import messagebox
