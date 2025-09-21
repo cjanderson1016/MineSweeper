@@ -11,7 +11,7 @@ Other sources for code: ChatGPT
 
 Date Created: 8/29/2025
 
-Last Updated: 8/29/2025
+Last Updated: 9/16/2025
 """
 from board_manager import BoardManager
 
@@ -26,6 +26,7 @@ class GameLogic:
     cells not containing mines are revealed.
     """
 
+    # Source: Original work combined with ChatGPT
     def __init__(self, board_manager: BoardManager):
         """
         Initializes game logic for the board the player will interact with
@@ -48,6 +49,7 @@ class GameLogic:
 
         self.first_click = True # Flag to indicate it is the first click
 
+    # Source: Original work combined with ChatGPT
     def start_game(self, mine_count, safe_cell=None):
         """
         Function that begins the game
@@ -66,9 +68,12 @@ class GameLogic:
         self.victory = False
         self.first_click = True # ensure that first_click is set to True for resets
 
+    # Source: Original work combined with ChatGPT
     def toggle_flag(self, row, col):
         """
         Function called whenever the player places down a flag (right click)
+        Toggles a flag at (row, col).
+        Returns True if the flag state changed, False otherwise.
 
         Input: The x/y coordinates of the cell that the player clicks on 
 
@@ -76,21 +81,30 @@ class GameLogic:
         
         """
 
+        if self.game_over:
+            return False
 
         cell = self.board.get_cell(row, col) # The cell that the player clicked on
+        
+        # Only allow flagging if the cell is still covered
+        if not cell.is_covered:
+            return False
 
         # Check if the cell already has a flag on it. If it does, remove the flag.
-        if cell['is_flagged']:
-            cell['is_flagged'] = False
+        if cell.is_flagged:
+            cell.is_flagged = False
             self.flags -= 1 # Remove flag
+            return True
         
         # If there is no flag on the cell, then check if the player has placed all of their flags. If not, place a flag.
         else:
             if self.flags < self.total_mines:
-                cell['is_flagged'] = True
+                cell.is_flagged = True
                 self.flags += 1 # Add flag
+                return True
+            return False
 
-
+    # Source: Original work combined with ChatGPT
     def reveal_cell(self, row, col):
         """
         Function called whenever the player reveals a cell (left click). Checks if the cell can be revealed, triggers game-over if the player uncovers a mine.
@@ -113,32 +127,31 @@ class GameLogic:
         cell = self.board.get_cell(row, col) # The cell that the player clicked on
 
         # A cell may not be revealed if: It has a flag on it, or if it has already been revealed.
-        if cell['is_flagged'] or not cell['is_covered']:
+        if cell.is_flagged or not cell.is_covered:
             return
         
         # Reveal the cell to the player
-        cell['is_covered'] = False
+        cell.is_covered = False
 
         # If the revealed cell contains a mine, trigger a game-over state
-        if cell['is_mine']:
+        if cell.is_mine:
             self.game_over = True
             self.victory = False
             return
 
         # If the revealed cell has no adjacent mines, recursively reveal all surrounding cells.
-        if cell['adjacent'] == 0:
+        if cell.adjacent == 0:
             # Check the 8 surrounding cells (nr = near rows, nc = near columns)
             for nr in range(row-1, row+2):
                 for nc in range(col-1, col+2):
                     #if the surrounding cells are within the bound of the board AND are not yet revealed, reveal them to the player.
                     if 0 <= nr < self.board.size and 0 <= nc < self.board.size:
-                        if self.board.get_cell(nr, nc)['is_covered']:
+                        if self.board.get_cell(nr, nc).is_covered:
                             self.reveal_cell(nr, nc) # Recursive call of reveal_cell function
 
         self.check_victory() # Check for a victory state after every time a cell is revealed
 
-
-
+    # Source: ChatGPT
     def check_victory(self):
         """
         Helper function that checks for victory state.
@@ -155,7 +168,7 @@ class GameLogic:
                 cell = self.board.get_cell(r, c)
 
                 # If a cell which does not have a mine is still revealed, the player has not won the game.
-                if not cell['is_mine'] and cell['is_covered']:
+                if not cell.is_mine and cell.is_covered:
                     return
         
         self.victory = True
