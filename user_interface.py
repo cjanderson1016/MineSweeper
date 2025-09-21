@@ -126,13 +126,12 @@ class UserInterface:
                 row_buttons.append(btn)
             self.buttons.append(row_buttons)
 
-    # Source: Original work
+    # Source: Original work combined with github copilot
     def update_size(self, event=None):
         # Adjust button sizes based on window size
-        print("Window resized")
         btn_width = 9 if self.root.attributes('-fullscreen') or self.root.wm_state() == "zoomed" else 3
         btn_height = 3 if self.root.attributes('-fullscreen') or self.root.wm_state() == "zoomed" else 1
-        font_size = 14 if self.root.attributes('-fullscreen') or self.root.wm_state() == "zoomed" else 10
+        font_size = 10 if self.root.attributes('-fullscreen') or self.root.wm_state() == "zoomed" else 10
 
         # Guard: if buttons not yet built, skip
         if not self.buttons or len(self.buttons) != self.game.board.size or any(len(row) != self.game.board.size for row in self.buttons):
@@ -199,7 +198,7 @@ class UserInterface:
             w.destroy()
         self.buttons = []
 
-    # Source: Original work
+    # Source: Original work combined with github copilot
     def toggle_fullscreen(self,event=None):
         # Toggle the full-screen mode of the window
         if self.root.attributes('-fullscreen'):
@@ -207,7 +206,7 @@ class UserInterface:
         else:
             self.root.attributes('-fullscreen', True)
 
-    # Source: Original work
+    # Source: Original work combined with github copilot
     def exit_fullscreen(self,event=None):
         # Exit full-screen mode and close the window on Escape key press
         self.root.attributes('-fullscreen', False)
