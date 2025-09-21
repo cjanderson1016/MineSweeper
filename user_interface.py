@@ -1,5 +1,5 @@
 """
-File Name: input_handler.py
+File Name: user_interface.py
 
 Description:  File handles user interactions with the game board, mine count input, game status updates, fullscreen controls, and 
 dynamic resizing of the grid. Shows the state of cells based on gameplay (such as number color). Works with minesweeper_gui.py to
